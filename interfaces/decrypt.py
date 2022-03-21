@@ -3,6 +3,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMessageBox
 
+import modules.keygen as keyg
+
 class decryptWidget(qtw.QWidget):
     def __init__(self, parent):
         super(qtw.QWidget, self).__init__(parent)   
@@ -28,9 +30,12 @@ class decryptWidget(qtw.QWidget):
             try:
                 options = qtw.QFileDialog.Options()
                 options |= qtw.QFileDialog.DontUseNativeDialog
-                fileName, _ = qtw.QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","Private key files (*.priv)", options=options)
+                fileName, _ = qtw.QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","Private key files (*.pri)", options=options)
                 if fileName:
-                    keyFile.setText(fileName)        
+                    dCatch, nCatch = keyg.openKeyFile(fileName)
+                    dfillInput.setText(str(dCatch))
+                    nfillInput.setText(str(nCatch))
+                    pass      
                 else:
                     raise Exception("File not found!")
             except Exception as e:
@@ -52,38 +57,62 @@ class decryptWidget(qtw.QWidget):
         self.layout = qtw.QGridLayout(self)
         self.setLayout(self.layout)
 
-        etextLabel = qtw.QLabel("File untuk didekripsi:", self)
+        filePickLayout = qtw.QGroupBox()
+        filePickLayout.setLayout(qtw.QVBoxLayout())
+
+        etextLabel = qtw.QLabel("File", self)
+        getFont = etextLabel.font()
+        getFont.setBold(True)
+        etextLabel.setFont(getFont)
         eFileLabel = qtw.QLabel("Belum ada file dipilih!", self)
         efilePick = qtw.QPushButton("Pilih file")
         efilePick.clicked.connect(lambda: pickFile())
 
-        self.layout.addWidget(etextLabel,0,0)
-        self.layout.addWidget(eFileLabel,1,0)
-        self.layout.addWidget(efilePick,2,0)
+        filePickLayout.layout().addWidget(etextLabel,0,Qt.AlignTop) 
+        filePickLayout.layout().addWidget(eFileLabel,1,Qt.AlignLeft)
+        filePickLayout.layout().addWidget(efilePick,2,Qt.AlignVCenter)
+        self.layout.addWidget(filePickLayout,0,0)
 
 
-        keyLabel = qtw.QLabel("Private key untuk mendekripsi:", self)
-        keyFile = qtw.QLabel("Belum ada file dipilih!", self)
+        keyLabel = qtw.QLabel("Private Key", self)
+        keyLabel.setFont(getFont)
+
+        eBoxLayout = qtw.QGroupBox()
+        eBoxLayout.setLayout(qtw.QGridLayout())
+
+        dFillLabel = qtw.QLabel("D:",self)
+        dfillInput = qtw.QLineEdit(self)
+
+        nFillLabel = qtw.QLabel("N:",self)
+        nfillInput = qtw.QLineEdit(self)
+
         kfilePick = qtw.QPushButton("Pilih file")
         kfilePick.clicked.connect(lambda: pickKey())
 
-        self.layout.addWidget(keyLabel,0,1)
-        self.layout.addWidget(keyFile,1,1)
-        self.layout.addWidget(kfilePick,2,1)
+        eBoxLayout.layout().addWidget(keyLabel,0,0,1,2,Qt.AlignTop)
+        eBoxLayout.layout().addWidget(dFillLabel,1,0,Qt.AlignLeft)
+        eBoxLayout.layout().addWidget(dfillInput,1,1,Qt.AlignLeft)
+        eBoxLayout.layout().addWidget(nFillLabel,2,0,Qt.AlignLeft)
+        eBoxLayout.layout().addWidget(nfillInput,2,1,Qt.AlignLeft)
+        eBoxLayout.layout().addWidget(kfilePick,3,0,1,2,Qt.AlignVCenter)
+
+        self.layout.addWidget(eBoxLayout,0,1)
+
+        infoLayout = qtw.QGroupBox()
+        infoLayout.setLayout(qtw.QVBoxLayout())
 
         infoTextLabel = qtw.QLabel("Estimasi", self)
+        infoTextLabel.setFont(getFont)
         sizeTextLabel = qtw.QLabel("Ukuran File: - Mb", self)
         timeTextLabel = qtw.QLabel("Waktu Enkripsi: - Menit", self)
 
-        self.layout.addWidget(infoTextLabel,0,2)
-        self.layout.addWidget(sizeTextLabel,1,2)
-        self.layout.addWidget(timeTextLabel,2,2)
+        infoLayout.layout().addWidget(infoTextLabel,1,Qt.AlignTop)
+        infoLayout.layout().addWidget(sizeTextLabel,1,Qt.AlignLeft)
+        infoLayout.layout().addWidget(timeTextLabel,1,Qt.AlignLeft)
 
-        saveBoxLayout = qtw.QGroupBox()
-        saveBoxLayout.setLayout(qtw.QVBoxLayout())
+        self.layout.addWidget(infoLayout,0,2)
+
         saveButton = qtw.QPushButton("Dekripsi")  
         saveButton.clicked.connect(lambda: decrypt()) 
 
-        saveBoxLayout.layout().addWidget(saveButton,2,Qt.AlignHCenter)
-
-        self.layout.addWidget(saveBoxLayout,3,1)
+        self.layout.addWidget(saveButton,3,1,Qt.AlignVCenter)

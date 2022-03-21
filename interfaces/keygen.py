@@ -47,40 +47,53 @@ class keygenWidget(qtw.QWidget):
         self.layout = qtw.QGridLayout(self)
         self.setLayout(self.layout)
 
+        ParameterLayout = qtw.QGroupBox()
+        ParameterLayout.setLayout(qtw.QGridLayout())        
+
+        ptextLabel = qtw.QLabel("Parameter", self)
+        getFont = ptextLabel.font()
+        getFont.setBold(True)
+        ptextLabel.setFont(getFont)
+
+        ParameterLayout.layout().addWidget(ptextLabel,0,0,1,2,Qt.AlignTop)
+
         ptextLabel = qtw.QLabel("P:", self)
         ptextBox = qtw.QLineEdit(self)
 
-        self.layout.addWidget(ptextLabel,0,0)
-        self.layout.addWidget(ptextBox,1,0)
+        ParameterLayout.layout().addWidget(ptextLabel,1,0,Qt.AlignLeft)
+        ParameterLayout.layout().addWidget(ptextBox,1,1,Qt.AlignLeft)
 
         qtextLabel = qtw.QLabel("Q:", self)
         qtextBox = qtw.QLineEdit(self)
 
-        self.layout.addWidget(qtextLabel,0,1)
-        self.layout.addWidget(qtextBox,1,1)
+        ParameterLayout.layout().addWidget(qtextLabel,2,0,Qt.AlignLeft)
+        ParameterLayout.layout().addWidget(qtextBox,2,1,Qt.AlignLeft)
 
         etextLabel = qtw.QLabel("E:", self)
         etextBox = qtw.QLineEdit(self)
 
-        self.layout.addWidget(etextLabel,0,2)
-        self.layout.addWidget(etextBox,1,2)
+        ParameterLayout.layout().addWidget(etextLabel,3,0,Qt.AlignLeft)
+        ParameterLayout.layout().addWidget(etextBox,3,1,Qt.AlignLeft)
         
         randomButton = qtw.QPushButton("Randomize Parameters")  
         randomButton.clicked.connect(lambda: giveMe()) 
-        self.layout.addWidget(randomButton,2,0)
+        ParameterLayout.layout().addWidget(randomButton,4,0,1,2,Qt.AlignVCenter)
+
+        self.layout.addWidget(ParameterLayout,0,0)
 
         saveBoxLayout = qtw.QGroupBox()
         saveBoxLayout.setLayout(qtw.QVBoxLayout())
-        saveLabel = qtw.QLabel("Key Name:", self)
+        saveLabel = qtw.QLabel("Simpan Kunci", self)
+        saveLabel.setFont(getFont)
         saveLine = qtw.QLineEdit(self)
         saveButton = qtw.QPushButton("Generate Key")  
         saveButton.clicked.connect(lambda: generate()) 
 
-        saveBoxLayout.layout().addWidget(saveLabel,0,Qt.AlignHCenter)
-        saveBoxLayout.layout().addWidget(saveLine,1,Qt.AlignHCenter)
-        saveBoxLayout.layout().addWidget(saveButton,2,Qt.AlignHCenter)
+        saveBoxLayout.layout().addWidget(saveLabel,0,Qt.AlignTop)
+        saveBoxLayout.layout().addWidget(saveLine,1,Qt.AlignVCenter)
+        saveBoxLayout.layout().addWidget(saveButton,2,Qt.AlignVCenter)
 
-        self.layout.addWidget(saveBoxLayout,2,1)
+        self.layout.addWidget(saveBoxLayout,0,1)
 
 
 
