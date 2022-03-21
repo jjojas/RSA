@@ -52,9 +52,9 @@ def genKeys(p : int, q : int ,e : int) -> Tuple:
                 k += 1
             return (int(d),n)
         else:
-            raise Exception("E and Toitent not relatively prime. Choose another E!")
+            raise Exception("E dan Toitent tidak relatif prima. Pilih E lain!")
     else:
-        raise Exception("P or Q is not a prime number. Pick another number(s)!")
+        raise Exception("P atau Q bukan bilangan prima. Pilih bilangan lain!")
 
 def saveKeys(name: str,e : int, d : int, n : int):
     '''
@@ -92,11 +92,11 @@ def openKeyFile(dir:str) -> Tuple:
                 return(int(e),int(n))
             else:
                 if (keytype == "pub"):
-                    raise Exception("Not a valid public key!")
+                    raise Exception("Bukan kunci publik yang valid!")
                 else:
-                    raise Exception("Not a valid private key!")
+                    raise Exception("Bukan kunci privat yang valid!")
         else:
-            raise Exception("Not a valid key file!")
+            raise Exception("Bukan file kunci!")
     except Exception as e:
         raise e
 
