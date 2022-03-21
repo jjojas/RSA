@@ -3,7 +3,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMessageBox
 
-class encrypyWidget(qtw.QWidget):
+class decryptWidget(qtw.QWidget):
     def __init__(self, parent):
         super(qtw.QWidget, self).__init__(parent)   
         self.initUI()
@@ -28,7 +28,7 @@ class encrypyWidget(qtw.QWidget):
             try:
                 options = qtw.QFileDialog.Options()
                 options |= qtw.QFileDialog.DontUseNativeDialog
-                fileName, _ = qtw.QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","Public key files (*.pub)", options=options)
+                fileName, _ = qtw.QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","Private key files (*.priv)", options=options)
                 if fileName:
                     keyFile.setText(fileName)        
                 else:
@@ -39,7 +39,7 @@ class encrypyWidget(qtw.QWidget):
                 msg.setInformativeText(f'Key anda gagal dipilih karena {e}')
                 msg.setWindowTitle("Key gagal")
                 msg.exec_()
-        def encrypt():
+        def decrypt():
             try:
                 pass
             except Exception as e:
@@ -52,7 +52,7 @@ class encrypyWidget(qtw.QWidget):
         self.layout = qtw.QGridLayout(self)
         self.setLayout(self.layout)
 
-        etextLabel = qtw.QLabel("File untuk dienkripsi:", self)
+        etextLabel = qtw.QLabel("File untuk didekripsi:", self)
         eFileLabel = qtw.QLabel("Belum ada file dipilih!", self)
         efilePick = qtw.QPushButton("Pilih file")
         efilePick.clicked.connect(lambda: pickFile())
@@ -62,7 +62,7 @@ class encrypyWidget(qtw.QWidget):
         self.layout.addWidget(efilePick,2,0)
 
 
-        keyLabel = qtw.QLabel("Public key untuk mengenkripsi:", self)
+        keyLabel = qtw.QLabel("Private key untuk mendekripsi:", self)
         keyFile = qtw.QLabel("Belum ada file dipilih!", self)
         kfilePick = qtw.QPushButton("Pilih file")
         kfilePick.clicked.connect(lambda: pickKey())
@@ -81,8 +81,8 @@ class encrypyWidget(qtw.QWidget):
 
         saveBoxLayout = qtw.QGroupBox()
         saveBoxLayout.setLayout(qtw.QVBoxLayout())
-        saveButton = qtw.QPushButton("Enkripsi")  
-        saveButton.clicked.connect(lambda: encrypt()) 
+        saveButton = qtw.QPushButton("Dekripsi")  
+        saveButton.clicked.connect(lambda: decrypt()) 
 
         saveBoxLayout.layout().addWidget(saveButton,2,Qt.AlignHCenter)
 

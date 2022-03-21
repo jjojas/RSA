@@ -13,6 +13,18 @@ class keygenWidget(qtw.QWidget):
         self.initUI()
     
     def initUI(self):
+        def giveMe():
+            try:
+                p,q,e = keyg.pickKeyforMe()
+                ptextBox.setText(str(p))
+                qtextBox.setText(str(q))
+                etextBox.setText(str(e))
+            except Exception as e:
+                msg = QMessageBox()
+                msg.setText("Parameter gagal dipilih!")
+                msg.setInformativeText(f'Parameter gagal ditentukan karena {e}')
+                msg.setWindowTitle("Pengacakan gagal")
+                msg.exec_()
         def generate():
             try:
                 p = int(ptextBox.text())
@@ -52,6 +64,10 @@ class keygenWidget(qtw.QWidget):
 
         self.layout.addWidget(etextLabel,0,2)
         self.layout.addWidget(etextBox,1,2)
+        
+        randomButton = qtw.QPushButton("Randomize Parameters")  
+        randomButton.clicked.connect(lambda: giveMe()) 
+        self.layout.addWidget(randomButton,2,0)
 
         saveBoxLayout = qtw.QGroupBox()
         saveBoxLayout.setLayout(qtw.QVBoxLayout())
