@@ -17,10 +17,15 @@ class decryptWidget(qtw.QWidget):
                 options |= qtw.QFileDialog.DontUseNativeDialog
                 fileName, _ = qtw.QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All files (*)", options=options)
                 if fileName:
-                    eFileLabel.setText(fileName)        
+                    eFileLabel.setText(fileName)
+                    fileDetails.setPlainText(str(open(fileName,"rb").read().hex())[0:1000])
                 else:
-                    raise Exception("File not found!")
+                    eFileLabel.setText("Belum ada file dipilih!")
+                    fileDetails.setPlainText("")
+                    raise Exception("file tidak ditemukan!")
             except Exception as e:
+                eFileLabel.setText("Belum ada file dipilih!")
+                fileDetails.setPlainText("")
                 msg = QMessageBox()
                 msg.setText("File gagal dipilih")
                 msg.setInformativeText(f'File anda gagal dipilih karena {e}')
@@ -112,6 +117,20 @@ class decryptWidget(qtw.QWidget):
 
         self.layout.addWidget(infoLayout,0,2)
 
+        fileLayout = qtw.QGroupBox()
+        fileLayout.setLayout(qtw.QVBoxLayout())
+
+        fileTextLabel = qtw.QLabel("Isi Cipherteks", self)
+        fileTextLabel.setFont(getFont)
+        fileDetails = qtw.QPlainTextEdit(self)
+        fileDetails.setReadOnly(True)
+        fileDetails.setPlainText("")
+
+        fileLayout.layout().addWidget(fileTextLabel,0,Qt.AlignTop)
+        fileLayout.layout().addWidget(fileDetails,1,Qt.AlignVCenter)
+
+        self.layout.addWidget(fileLayout,1,0)
+        
         saveButton = qtw.QPushButton("Dekripsi")  
         saveButton.clicked.connect(lambda: decrypt()) 
 

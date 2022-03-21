@@ -19,8 +19,10 @@ class encrypyWidget(qtw.QWidget):
                 if fileName:
                     eFileLabel.setText(fileName)        
                 else:
-                    raise Exception("File not found!")
+                    eFileLabel.setText("Belum ada file dipilih!")        
+                    raise Exception("file tidak ditemukan!")
             except Exception as e:
+                eFileLabel.setText("Belum ada file dipilih!")        
                 msg = QMessageBox()
                 msg.setText("File gagal dipilih")
                 msg.setInformativeText(f'File anda gagal dipilih karena {e}')

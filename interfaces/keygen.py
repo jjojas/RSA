@@ -85,11 +85,13 @@ class keygenWidget(qtw.QWidget):
         saveBoxLayout.setLayout(qtw.QVBoxLayout())
         saveLabel = qtw.QLabel("Simpan Kunci", self)
         saveLabel.setFont(getFont)
+        saveNameLabel = qtw.QLabel("Nama Kunci:", self)
         saveLine = qtw.QLineEdit(self)
-        saveButton = qtw.QPushButton("Generate Key")  
+        saveButton = qtw.QPushButton("Bangkitkan dan Simpan")  
         saveButton.clicked.connect(lambda: generate()) 
 
         saveBoxLayout.layout().addWidget(saveLabel,0,Qt.AlignTop)
+        saveBoxLayout.layout().addWidget(saveNameLabel,1,Qt.AlignVCenter)   
         saveBoxLayout.layout().addWidget(saveLine,1,Qt.AlignVCenter)
         saveBoxLayout.layout().addWidget(saveButton,2,Qt.AlignVCenter)
 
