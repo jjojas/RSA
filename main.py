@@ -3,6 +3,7 @@ from PyQt5.QtGui import *
 
 import interfaces.encrypt as e
 import interfaces.keygen as k
+import interfaces.decrypt as d
 
 from os import environ
 
@@ -25,7 +26,8 @@ class mainWidget(qtw.QWidget):
         self.tabs = qtw.QTabWidget()
         self.tabs.setFont(QFont('Roboto', 14))
         self.tabs.addTab(k.keygenWidget(self),"Generate Key")
-        self.tabs.addTab(k.keygenWidget(self),"Encrypt / Decrypt")
+        self.tabs.addTab(e.encrypyWidget(self),"Encrypt")
+        self.tabs.addTab(d.decryptWidget(self),"Decrypt")
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)    
 
