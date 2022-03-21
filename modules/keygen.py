@@ -1,4 +1,5 @@
 from typing import Tuple
+import random
 
 def checkPrime(n : int) -> bool:
     try:
@@ -10,6 +11,20 @@ def checkPrime(n : int) -> bool:
                 return False
             i += 1
         return True
+    except Exception as e:
+        raise e
+
+def pickKeyforMe() -> Tuple:
+    try:
+        f = open("modules/primelist.txt","r")
+        primes = f.read().split()
+        p,q,e = random.choices(primes, k=3)
+        p = int(p)
+        q = int(q)
+        e = int(e)
+        while (not relativePrime((p-1)*(q-1),e)):
+            p,q,e = random.choices(primes, k=3)
+        return (p,q,e)
     except Exception as e:
         raise e
 
