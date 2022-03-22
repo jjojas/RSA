@@ -28,4 +28,4 @@ def encryptFile(fileName: str, e: int, n: int):
     file.write(cipherBytes)
     file.close()
 
-encryptFile("main.py",1,1)
+encryptFile("main.py",7,209)
