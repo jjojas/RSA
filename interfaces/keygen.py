@@ -1,3 +1,4 @@
+from datetime import datetime
 import PyQt5.QtWidgets as qtw
 from PyQt5.QtGui import * 
 from PyQt5.QtCore import Qt
@@ -30,11 +31,13 @@ class keygenWidget(qtw.QWidget):
                 p = int(ptextBox.text())
                 q = int(qtextBox.text())
                 e = int(etextBox.text())
+                now = datetime.now()
                 name = saveLine.text()
                 keyg.createKeyFile(name,p,q,e)
+                s = datetime.now() - now
                 msg = QMessageBox()
                 msg.setText("Kunci berhasil dibuat!")
-                msg.setInformativeText(f'Kunci publik Anda dapat diakses di key/{saveLine.text()}.pub dan \n Kunci privat Anda dapat diakses di key/{saveLine.text()}.pri ')
+                msg.setInformativeText(f'Kunci berhasil dibuat setelah {str(s)}\nKunci publik Anda dapat diakses di key/{saveLine.text()}.pub\nKunci privat Anda dapat diakses di key/{saveLine.text()}.pri ')
                 msg.setWindowTitle("Pembangkitan kunci berhasil")
                 msg.exec_()
             except Exception as e:
