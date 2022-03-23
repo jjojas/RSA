@@ -17,33 +17,19 @@ def baseEncrypt(m: int, e: int, n: int) -> int:
 def convertBytetoIntArray(bytesInput: bytes, digitDiv: int) -> List[int]:
     result = []
     binInput = bin(int.from_bytes(bytesInput, "big"))[2:]
-    
-    for index in range(0, len(binInput), digitDiv):
-        # print("iter",binInput[index : index + digitDiv])
-        result.append(int(binInput[index : index + digitDiv], 2))
-    # print("plain arr", result)
-    # print("len", len(result))
-    return result
 
+    for index in range(0, len(binInput), digitDiv):
+        result.append(int(binInput[index : index + digitDiv], 2))
+    result.append(len(binInput) % digitDiv)
+
+    return result
+    
 def convertIntArraytoByte(inputList: List[int], digit: int) -> bytes:
     binary = ''.join([bin(val)[2:].zfill(digit) for val in inputList]) 
-    print("list", inputList)
-    print("len input", len(inputList))
-    print(binary)
-    print("len bin", len(binary))
-    # for i, val in enumerate(inputList):
-    #     if i != len(inputList)-1 :
-    #         binary+=bin(val)[2:].zfill(digit)
-    #     else:
-    #         binary+=bin(val)[2:]
     
     intResult = int(binary, 2)
-    print("BigInt",intResult)
-    
     result = intResult.to_bytes((len(binary) + 7) // 8, "big")
-    print("cipherbyte", result)
-    print("cipherbyte", result[-1])
-    print("len byte", len(result))
+
     return result
 
 def digitDivider(n: int) -> int:
@@ -59,7 +45,6 @@ def encryptFile(fileName: str, e: int, n: int):
     file = open(fileName, "rb")
     plainBytes = file.read()
     file.close()
-    print(len(plainBytes))
     
     # intValue = int.from_bytes(plainBytes, "big", signed=False)
     # print("value:",intValue)
@@ -80,6 +65,8 @@ def encryptFile(fileName: str, e: int, n: int):
 # Public Key (E, N): (7,209)
 # Private Key (D, N): (283,209)
 # encryptFile("main.py",7,209)
-encryptFile("files/legenda.png",7,209)
+# encryptFile("files/legenda.png",7,209)
+# encryptFile("files/legenda2.png",79,3337)
+# encryptFile("files/util2.mkv",79,3337)
 # convertBytetoIntArray(b'\xfc\x00', 5)
 # convertIntArraytoByte([2,2])

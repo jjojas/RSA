@@ -37,14 +37,16 @@ def convertIntArraytoByte(inputList: List[int], digit: int) -> bytes:
     # print("len", len(inputList))
     binary = ''
     for i, val in enumerate(inputList):
-        if i != len(inputList)-1 :
+        if i != len(inputList)-2 :
             binary+=bin(val)[2:].zfill(digit)
         else:
-            binary+=bin(val)[2:]
-    
+            binary+=bin(val)[2:].zfill(inputList[-1])
+            break
+
     intResult = int(binary, 2)
     
     result = intResult.to_bytes((len(binary) + 7) // 8, "big", signed=False)
+
     return result
 
 def digitDivider(n: int) -> int:
@@ -68,7 +70,6 @@ def decryptFile(fileName: str, d: int, n: int):
     # print("cipher:",cipherInt)
     # cipherBytes = intValue.to_bytes((cipherInt.bit_length() + 7) // 8, "big", signed=False)
     
-
     digitDiv = digitDivider(n)
     intValue = convertBytetoIntArray(cipherBytes, maxBitLength(n))
     plainInt = [baseDecrypt(val, d, n) for val in intValue]
@@ -82,7 +83,9 @@ def decryptFile(fileName: str, d: int, n: int):
 # Public Key (E, N): (7,209)
 # Private Key (D, N): (283,209)
 # encryptFile("main.py",7,209)
-decryptFile("files/encrypted_main.py",283,209)
-decryptFile("files/encrypted_legenda.png",283,209)
+# decryptFile("files/encrypted_main.py",283,209)
+# decryptFile("files/encrypted_legenda.png",283,209)
+# decryptFile("files/encrypted_legenda2.png",1019,3337)
+# decryptFile("files/encrypted_util2.mkv",1019,3337)
 # convertBytetoIntArray(b'\xfc\x00', 5)
 # convertIntArraytoByte([2,2])
