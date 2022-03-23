@@ -17,9 +17,37 @@ class encrypyWidget(qtw.QWidget):
                 options |= qtw.QFileDialog.DontUseNativeDialog
                 fileName, _ = qtw.QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All files (*)", options=options)
                 if fileName:
-                    eFileLabel.setText(fileName)        
+                    eFileLabel.setText(fileName)
+                    pictureList = ["jpeg","jpg","png","gif","bmp"]
+                    if fileName.split(".")[-1] in pictureList:
+                        count = fileLayout.layout().count()
+                        if count > 1:
+                            fileLayout.layout().removeItem(fileLayout.layout().itemAt(count-1))
+
+                        fileDetailsImage = qtw.QLabel(self)
+                        fileDetailsImage.setText("")
+
+                        pixmap = QPixmap(fileName)
+                        scaled = pixmap.scaledToWidth(200)
+                        fileDetailsImage.setPixmap(scaled)
+
+                        fileLayout.layout().addWidget(fileDetailsImage,count-1,Qt.AlignVCenter)
+                    else:
+                        count = fileLayout.layout().count()
+                        if count > 1:
+                            fileLayout.layout().removeItem(fileLayout.layout().itemAt(count-1))
+
+                        fileDetails = qtw.QPlainTextEdit(self)
+                        fileDetails.setReadOnly(True)
+                        fileDetails.setPlainText("text")
+
+                        fileDetails.setPlainText(str(open(fileName,"rb").read().decode("ISO-8859-1"))[0:1000])
+
+                        fileLayout.layout().addWidget(fileDetails,count-1,Qt.AlignVCenter)
                 else:
-                    eFileLabel.setText("Belum ada file dipilih!")        
+                    eFileLabel.setText("Belum ada file dipilih!")
+                    if fileLayout.layout().count() > 1:
+                        fileLayout.layout().removeItem(fileLayout.layout().itemAt(-1))
                     raise Exception("file tidak ditemukan!")
             except Exception as e:
                 eFileLabel.setText("Belum ada file dipilih!")        
@@ -113,8 +141,19 @@ class encrypyWidget(qtw.QWidget):
         infoLayout.layout().addWidget(timeTextLabel,1,Qt.AlignLeft)
 
         self.layout.addWidget(infoLayout,0,2)
+        
+        fileLayout = qtw.QGroupBox()
+        fileLayout.setLayout(qtw.QVBoxLayout())
 
+        fileTextLabel = qtw.QLabel("Isi Cipherteks", self)
+        fileTextLabel.setFont(getFont)
+
+        fileLayout.layout().addWidget(fileTextLabel,0,Qt.AlignTop)
+
+        self.layout.addWidget(fileLayout,1,0)
+        
         saveButton = qtw.QPushButton("Enkripsi")  
         saveButton.clicked.connect(lambda: encrypt()) 
 
         self.layout.addWidget(saveButton,3,1,Qt.AlignVCenter)
+
