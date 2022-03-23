@@ -25,7 +25,7 @@ class encrypyWidget(qtw.QWidget):
                             fileLayout.layout().removeItem(fileLayout.layout().itemAt(count-1))
 
                         fileDetailsImage = qtw.QLabel(self)
-                        fileDetailsImage.setText("img")
+                        fileDetailsImage.setText("")
 
                         pixmap = QPixmap(fileName)
                         scaled = pixmap.scaledToWidth(200)
