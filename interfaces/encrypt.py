@@ -3,7 +3,12 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMessageBox
 
+from datetime import datetime
+
 import modules.keygen as keyg
+import modules.encrypt as enc
+
+import math
 
 class encrypyWidget(qtw.QWidget):
     def __init__(self, parent):
@@ -18,6 +23,7 @@ class encrypyWidget(qtw.QWidget):
                 fileName, _ = qtw.QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","All files (*)", options=options)
                 if fileName:
                     eFileLabel.setText(fileName)
+
                     pictureList = ["jpeg","jpg","png","gif","bmp"]
                     if fileName.split(".")[-1] in pictureList:
                         count = fileLayout.layout().count()
@@ -44,13 +50,26 @@ class encrypyWidget(qtw.QWidget):
                         fileDetails.setPlainText(str(open(fileName,"rb").read().decode("ISO-8859-1"))[0:1000])
 
                         fileLayout.layout().addWidget(fileDetails,count-1,Qt.AlignVCenter)
+
+                    if len(nfillInput.text())>0:
+                        fileOpen = open(eFileLabel.text(),"rb")
+                        fileBin = fileOpen.read()
+                        fileSize = len(fileBin)
+                        print(nfillInput.text())
+                        n = math.floor(math.log2(int(nfillInput.text())))
+                        estimatedSize = fileSize*(1 + (1/n))
+                        sizeTextLabel.setText(f"Ukuran File: {estimatedSize:.2f} Bytes")
+                    else:
+                        sizeTextLabel.setText("Ukuran File: - Bytes")
+                    
                 else:
                     eFileLabel.setText("Belum ada file dipilih!")
                     if fileLayout.layout().count() > 1:
                         fileLayout.layout().removeItem(fileLayout.layout().itemAt(-1))
                     raise Exception("file tidak ditemukan!")
             except Exception as e:
-                eFileLabel.setText("Belum ada file dipilih!")        
+                eFileLabel.setText("Belum ada file dipilih!")
+                sizeTextLabel.setText("Ukuran File: - Bytes")
                 msg = QMessageBox()
                 msg.setText("File gagal dipilih")
                 msg.setInformativeText(f'File anda gagal dipilih karena {e}')
@@ -65,7 +84,15 @@ class encrypyWidget(qtw.QWidget):
                     eCatch, nCatch = keyg.openKeyFile(fileName)
                     efillInput.setText(str(eCatch))
                     nfillInput.setText(str(nCatch))
-                    pass      
+                    if len(eFileLabel.text())>0:
+                        fileOpen = open(eFileLabel.text(),"rb")
+                        fileBin = fileOpen.read()
+                        fileSize = len(fileBin)
+                        n = math.floor(math.log2(int(nfillInput.text())))
+                        estimatedSize = fileSize*(1 + (1/n))
+                        sizeTextLabel.setText(f"Ukuran File: {estimatedSize:.2f} Bytes")
+                    else:
+                        sizeTextLabel.setText("Ukuran File: - Bytes")      
                 else:
                     raise Exception("File not found!")
             except Exception as e:
@@ -76,12 +103,42 @@ class encrypyWidget(qtw.QWidget):
                 msg.exec_()
         def encrypt():
             try:
-                pass
+                if (eFileLabel.text() != "Belum ada file dipilih!"):
+                    if (len(efillInput.text()) > 0) and (len(nfillInput.text()) > 0):
+                        if (keyg.relativePrime(int(efillInput.text()),int(nfillInput.text()))):
+                            now = datetime.now()
+                            enc.encryptFile(eFileLabel.text(),int(efillInput.text()),int(nfillInput.text()))
+                            s = datetime.now() - now
+                            msg = QMessageBox()
+                            msg.setText("File berhasil dienkripsi")
+                            msg.setInformativeText(f'File berhasil dienkripsi setelah {str(s)}\n')
+                            msg.setWindowTitle("Enkripsi erhasil")
+                            msg.exec_()
+                        else:
+                            msg = QMessageBox()
+                            msg.setText("File gagal dienkripsi!")
+                            msg.setInformativeText(f'Kunci tidak relatif prima!')
+                            msg.setWindowTitle("Enkripsi Gagal")
+                            msg.exec_() 
+
+                    else:
+                        msg = QMessageBox()
+                        msg.setText("File gagal dienkripsi!")
+                        msg.setInformativeText(f'Kunci tidak boleh kosong!')
+                        msg.setWindowTitle("Enkripsi Gagal")
+                        msg.exec_() 
+                else:
+                        msg = QMessageBox()
+                        msg.setText("File gagal dienkripsi!")
+                        msg.setInformativeText(f'File tidak boleh kosong!')
+                        msg.setWindowTitle("Enkripsi Gagal")
+                        msg.exec_() 
+
             except Exception as e:
                 msg = QMessageBox()
-                msg.setText("Kunci gagal dibuat!")
-                msg.setInformativeText(f'Kunci anda gagal dibuat karena {e}')
-                msg.setWindowTitle("Pembangkitan kunci gagal")
+                msg.setText("File gagal dienkripsi!")
+                msg.setInformativeText(f'File gagal dienkripsi karena {e}')
+                msg.setWindowTitle("Enkripsi Gagal")
                 msg.exec_()
 
         self.layout = qtw.QGridLayout(self)
@@ -133,7 +190,7 @@ class encrypyWidget(qtw.QWidget):
 
         infoTextLabel = qtw.QLabel("Estimasi", self)
         infoTextLabel.setFont(getFont)
-        sizeTextLabel = qtw.QLabel("Ukuran File: - Mb", self)
+        sizeTextLabel = qtw.QLabel("Ukuran File: - Bytes", self)
         timeTextLabel = qtw.QLabel("Waktu Enkripsi: - Menit", self)
 
         infoLayout.layout().addWidget(infoTextLabel,1,Qt.AlignTop)
