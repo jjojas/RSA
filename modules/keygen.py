@@ -1,7 +1,16 @@
+'''
+RSA Key Generator Algorithm
+ 
+Generate key from given P, Q and E Value"
+'''
+
 from typing import Tuple
 import random
 
 def checkPrime(n : int) -> bool:
+    '''
+    Memeriksa apakah N merupakan bilangan prima
+    '''
     try:
         if (n == 1):
             return False
@@ -15,6 +24,9 @@ def checkPrime(n : int) -> bool:
         raise e
 
 def pickKeyforMe() -> Tuple:
+    '''
+    Pengacak kunci dari kumpulan bilangan prima terdefinisi
+    '''
     try:
         f = open("modules/primelist.txt","r")
         primes = f.read().split()
@@ -29,6 +41,9 @@ def pickKeyforMe() -> Tuple:
         raise e
 
 def relativePrime(a:int, b:int) -> bool:
+    '''
+    Memeriksa apakah A dan B relatif prima
+    '''
     try:
         while (b):
             a, b = b, a% b
@@ -58,7 +73,7 @@ def genKeys(p : int, q : int ,e : int) -> Tuple:
 
 def saveKeys(name: str,e : int, d : int, n : int):
     '''
-    Save generated keys to text file
+    Menyimpan kunci ke dalam file
     '''
     try:
         f = open(f"key/{name}.pub","w")
@@ -74,6 +89,9 @@ def saveKeys(name: str,e : int, d : int, n : int):
         raise e
 
 def createKeyFile(name:str,p:int,q:int,e:int):
+    '''
+    Membuat file kunci dari input
+    '''
     try:
         priv,pub = genKeys(p,q,e)
         saveKeys(name,e,priv,pub)
@@ -81,6 +99,9 @@ def createKeyFile(name:str,p:int,q:int,e:int):
         raise e
 
 def openKeyFile(dir:str) -> Tuple:
+    '''
+    Membuka file kunci untuk ditampilkan
+    '''
     try:
         f = open(dir,"r")
         content = f.read()
