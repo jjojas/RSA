@@ -191,11 +191,11 @@ class encrypyWidget(qtw.QWidget):
         infoTextLabel = qtw.QLabel("Estimasi", self)
         infoTextLabel.setFont(getFont)
         sizeTextLabel = qtw.QLabel("Ukuran File: - Bytes", self)
-        timeTextLabel = qtw.QLabel("Waktu Enkripsi: - Menit", self)
+        # timeTextLabel = qtw.QLabel("Waktu Enkripsi: - Menit", self)
 
         infoLayout.layout().addWidget(infoTextLabel,1,Qt.AlignTop)
         infoLayout.layout().addWidget(sizeTextLabel,1,Qt.AlignLeft)
-        infoLayout.layout().addWidget(timeTextLabel,1,Qt.AlignLeft)
+        # infoLayout.layout().addWidget(timeTextLabel,1,Qt.AlignLeft)
 
         self.layout.addWidget(infoLayout,0,2)
         

@@ -4,6 +4,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMessageBox
 
 import modules.keygen as keyg
+import modules.decrypt as dec
+from datetime import datetime
 
 class decryptWidget(qtw.QWidget):
     def __init__(self, parent):
@@ -51,12 +53,36 @@ class decryptWidget(qtw.QWidget):
                 msg.exec_()
         def decrypt():
             try:
-                pass
+                if (eFileLabel.text() != "Belum ada file dipilih!"):
+                    if (len(dfillInput.text()) > 0) and (len(nfillInput.text()) > 0):
+                        if (keyg.relativePrime(int(dfillInput.text()),int(nfillInput.text()))):
+                            now = datetime.now()
+                            dec.decryptFile(eFileLabel.text(),int(dfillInput.text()),int(nfillInput.text()))
+                            s = datetime.now() - now
+                            msg = QMessageBox()
+                            msg.setText("File berhasil didekripsi")
+                            msg.setInformativeText(f'File berhasil didekripsi setelah {str(s)}\n')
+                            msg.setWindowTitle("Dekripsi berhasil")
+                            msg.exec_()
+
+                    else:
+                        msg = QMessageBox()
+                        msg.setText("File gagal didekripsi!")
+                        msg.setInformativeText(f'Kunci tidak boleh kosong!')
+                        msg.setWindowTitle("Dekripsi Gagal")
+                        msg.exec_() 
+                else:
+                        msg = QMessageBox()
+                        msg.setText("File gagal didekripsi!")
+                        msg.setInformativeText(f'File tidak boleh kosong!')
+                        msg.setWindowTitle("Dekripsi Gagal")
+                        msg.exec_() 
+
             except Exception as e:
                 msg = QMessageBox()
-                msg.setText("Kunci gagal dibuat!")
-                msg.setInformativeText(f'Kunci anda gagal dibuat karena {e}')
-                msg.setWindowTitle("Pembangkitan kunci gagal")
+                msg.setText("File gagal didekripsi!")
+                msg.setInformativeText(f'File gagal didekripsi karena {e}')
+                msg.setWindowTitle("Dekripsi Gagal")
                 msg.exec_()
 
         self.layout = qtw.QGridLayout(self)
