@@ -10,9 +10,9 @@ Untuk menjalankan program pertama pastikan telah menginstall seluruh requirement
 `pip install -r requirements.txt`
 
 Lalu jalankan program utama dengan command
-`py app.py`
+`py main.py`
 atau
-`python3 app.py`
+`python3 main.py`
 
 ## Dibuat oleh
 
