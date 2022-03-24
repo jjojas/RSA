@@ -6,6 +6,8 @@ from PyQt5.QtWidgets import QMessageBox
 import modules.keygen as keyg
 import modules.decrypt as dec
 from datetime import datetime
+import math
+import os
 
 class decryptWidget(qtw.QWidget):
     def __init__(self, parent):
@@ -21,12 +23,26 @@ class decryptWidget(qtw.QWidget):
                 if fileName:
                     eFileLabel.setText(fileName)
                     fileDetails.setPlainText(str(open(fileName,"rb").read().hex())[0:1000])
+
+                    if len(nfillInput.text())>0:
+                        fileOpen = open(eFileLabel.text(),"rb")
+                        fileBin = fileOpen.read()
+                        fileSize = len(fileBin)
+                        print(nfillInput.text())
+                        n = math.floor(math.log2(int(nfillInput.text())))
+                        estimatedSize = fileSize/(1 + (1/n))
+                        sizeTextLabel.setText(f"Ukuran File: {estimatedSize/1024:.2f} KB")
+                    else:
+                        sizeTextLabel.setText("Ukuran File: - Bytes")
+
                 else:
                     eFileLabel.setText("Belum ada file dipilih!")
+                    sizeTextLabel.setText("Ukuran File: - Bytes")
                     fileDetails.setPlainText("")
                     raise Exception("file tidak ditemukan!")
             except Exception as e:
                 eFileLabel.setText("Belum ada file dipilih!")
+                sizeTextLabel.setText("Ukuran File: - Bytes")
                 fileDetails.setPlainText("")
                 msg = QMessageBox()
                 msg.setText("File gagal dipilih")
@@ -42,7 +58,17 @@ class decryptWidget(qtw.QWidget):
                     dCatch, nCatch = keyg.openKeyFile(fileName)
                     dfillInput.setText(str(dCatch))
                     nfillInput.setText(str(nCatch))
-                    pass      
+
+                    if len(eFileLabel.text())>0:
+                        fileOpen = open(eFileLabel.text(),"rb")
+                        fileBin = fileOpen.read()
+                        fileSize = len(fileBin)
+                        print(nfillInput.text())
+                        n = math.floor(math.log2(int(nfillInput.text())))
+                        estimatedSize = fileSize/(1 + (1/n))
+                        sizeTextLabel.setText(f"Ukuran File: {estimatedSize/1024:.2f} KB")
+                    else:
+                        sizeTextLabel.setText("Ukuran File: - Bytes")
                 else:
                     raise Exception("File not found!")
             except Exception as e:
@@ -61,7 +87,9 @@ class decryptWidget(qtw.QWidget):
                             s = datetime.now() - now
                             msg = QMessageBox()
                             msg.setText("File berhasil didekripsi")
-                            msg.setInformativeText(f'File berhasil didekripsi setelah {str(s)}\n')
+                            fileName = eFileLabel.text().split("/")[-1]
+                            fileEncrypted = f"files/decrypted_{fileName}"
+                            msg.setInformativeText(f'File berhasil didekripsi setelah {str(s)}\ndengan ukuran {(os.path.getsize(fileEncrypted)/1024):.2f} KB')
                             msg.setWindowTitle("Dekripsi berhasil")
                             msg.exec_()
 
@@ -135,11 +163,9 @@ class decryptWidget(qtw.QWidget):
         infoTextLabel = qtw.QLabel("Estimasi", self)
         infoTextLabel.setFont(getFont)
         sizeTextLabel = qtw.QLabel("Ukuran File: - Mb", self)
-        timeTextLabel = qtw.QLabel("Waktu Enkripsi: - Menit", self)
 
         infoLayout.layout().addWidget(infoTextLabel,1,Qt.AlignTop)
         infoLayout.layout().addWidget(sizeTextLabel,1,Qt.AlignLeft)
-        infoLayout.layout().addWidget(timeTextLabel,1,Qt.AlignLeft)
 
         self.layout.addWidget(infoLayout,0,2)
 

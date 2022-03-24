@@ -9,6 +9,7 @@ import modules.keygen as keyg
 import modules.encrypt as enc
 
 import math
+import os
 
 class encrypyWidget(qtw.QWidget):
     def __init__(self, parent):
@@ -58,7 +59,7 @@ class encrypyWidget(qtw.QWidget):
                         print(nfillInput.text())
                         n = math.floor(math.log2(int(nfillInput.text())))
                         estimatedSize = fileSize*(1 + (1/n))
-                        sizeTextLabel.setText(f"Ukuran File: {estimatedSize:.2f} Bytes")
+                        sizeTextLabel.setText(f"Ukuran File: {estimatedSize/1024:.2f} KB")
                     else:
                         sizeTextLabel.setText("Ukuran File: - Bytes")
                     
@@ -90,7 +91,7 @@ class encrypyWidget(qtw.QWidget):
                         fileSize = len(fileBin)
                         n = math.floor(math.log2(int(nfillInput.text())))
                         estimatedSize = fileSize*(1 + (1/n))
-                        sizeTextLabel.setText(f"Ukuran File: {estimatedSize:.2f} Bytes")
+                        sizeTextLabel.setText(f"Ukuran File: {estimatedSize/1024:.2f} KB")
                     else:
                         sizeTextLabel.setText("Ukuran File: - Bytes")      
                 else:
@@ -111,7 +112,9 @@ class encrypyWidget(qtw.QWidget):
                             s = datetime.now() - now
                             msg = QMessageBox()
                             msg.setText("File berhasil dienkripsi")
-                            msg.setInformativeText(f'File berhasil dienkripsi setelah {str(s)}\n')
+                            fileName = eFileLabel.text().split("/")[-1]
+                            fileEncrypted = f"files/encrypted_{fileName}"
+                            msg.setInformativeText(f'File berhasil dienkripsi setelah {str(s)}\ndengan ukuran {(os.path.getsize(fileEncrypted)/1024):.2f} KB')
                             msg.setWindowTitle("Enkripsi erhasil")
                             msg.exec_()
                         else:
