@@ -51,6 +51,7 @@ def relativePrime(a:int, b:int) -> bool:
     except Exception as e:
         raise e
 
+
 def genKeys(p : int, q : int ,e : int) -> Tuple:
     '''
     Membangkitkan kunci publik dan privat
@@ -60,11 +61,7 @@ def genKeys(p : int, q : int ,e : int) -> Tuple:
         n = p*q
         toit = (p-1)*(q-1)
         if (relativePrime(toit,e)):
-            d = 0.5
-            k = 1
-            while (d%1 != 0):
-                d = (1+k*toit)/e
-                k += 1
+            d = (pow(e, -1, toit))
             return (int(d),n)
         else:
             raise Exception("E dan Toitent tidak relatif prima. Pilih E lain!")
