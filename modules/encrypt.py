@@ -60,7 +60,7 @@ def encryptFile(fileName: str, e: int, n: int):
 # Private Key (D, N): (283,209)
 # encryptFile("main.py",7,209)
 # encryptFile("files/legenda.png",7,209)
-encryptFile("files/legenda2.png",5,39203)
+# encryptFile("files/legenda2.png",5,39203)
 # encryptFile("files/util2.mkv",79,3337)
 # convertBytetoIntArray(b'\xfc\x00', 5)
 # convertIntArraytoByte([2,2])

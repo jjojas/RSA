@@ -72,7 +72,7 @@ def decryptFile(fileName: str, d: int, n: int):
 # encryptFile("main.py",7,209)
 # decryptFile("files/encrypted_main.py",283,209)
 # decryptFile("files/encrypted_legenda.png",283,209)
-decryptFile("files/encrypted_legenda2.png",62093,39203)
+# decryptFile("files/encrypted_legenda2.png",62093,39203)
 # decryptFile("files/encrypted_util2.mkv",1019,3337)
 # convertBytetoIntArray(b'\xfc\x00', 5)
 # convertIntArraytoByte([2,2])
