@@ -52,6 +52,7 @@ def maxBitLength(n: int) -> int:
 def encryptFile(fileName: str, e: int, n: int):
     '''
     Operasi enkripsi file berdasarkan kunci publik (e,n)
+    File disimpan dalam direktori /files/
     '''
     file = open(fileName, "rb")
     plainBytes = file.read()

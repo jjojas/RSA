@@ -66,6 +66,7 @@ def maxBitLength(n: int) -> int:
 def decryptFile(fileName: str, d: int, n: int):
     '''
     Operasi dekripsi file berdasarkan kunci publik (d,n)
+    File disimpan dalam direktori /files/
     '''
     file = open(fileName, "rb")
     cipherBytes = file.read()
