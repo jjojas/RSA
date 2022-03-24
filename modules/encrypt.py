@@ -12,7 +12,7 @@ def baseEncrypt(m: int, e: int, n: int) -> int:
     '''
     Base RSA Encryption algorithm
     '''
-    return (m**e) % n
+    return pow(m, e, n)
     
 def convertBytetoIntArray(bytesInput: bytes, digitDiv: int) -> List[int]:
     result = []
@@ -46,12 +46,6 @@ def encryptFile(fileName: str, e: int, n: int):
     plainBytes = file.read()
     file.close()
     
-    # intValue = int.from_bytes(plainBytes, "big", signed=False)
-    # print("value:",intValue)
-    # cipherInt = baseEncrypt(intValue, e, n)
-    # print("cipher:",cipherInt)
-    # cipherBytes = intValue.to_bytes((cipherInt.bit_length() + 7) // 8, "big", signed=False)
-    
     digitDiv = digitDivider(n)
     intValue = convertBytetoIntArray(plainBytes, digitDiv)
     cipherInt = [baseEncrypt(val, e, n) for val in intValue]
@@ -66,7 +60,7 @@ def encryptFile(fileName: str, e: int, n: int):
 # Private Key (D, N): (283,209)
 # encryptFile("main.py",7,209)
 # encryptFile("files/legenda.png",7,209)
-# encryptFile("files/legenda2.png",79,3337)
+encryptFile("files/legenda2.png",5,39203)
 # encryptFile("files/util2.mkv",79,3337)
 # convertBytetoIntArray(b'\xfc\x00', 5)
 # convertIntArraytoByte([2,2])

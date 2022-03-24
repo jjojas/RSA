@@ -12,7 +12,7 @@ def baseDecrypt(c: int, d: int, n: int) -> int:
     '''
     Base RSA Encryption algorithm
     '''
-    return (c**d) % n
+    return pow(c, d, n)
 
 def binaryPadding(bits: str, n: int) -> str :
     while len(bits) % n != 0:
@@ -22,19 +22,14 @@ def binaryPadding(bits: str, n: int) -> str :
 def convertBytetoIntArray(bytesInput: bytes, digitDiv: int) -> List[int]:
     result = []
     binInput = bin(int.from_bytes(bytesInput, "big"))[2:]
-    # binInput = binInput.zfill(len(bytesInput)*digitDiv)
     binInput = binaryPadding(binInput, digitDiv)
 
     for index in range(0, len(binInput), digitDiv):
-        # print("iter",binInput[index : index + digitDiv])
         result.append(int(binInput[index : index + digitDiv], 2))
 
     return result
 
 def convertIntArraytoByte(inputList: List[int], digit: int) -> bytes:
-    # binary = ''.join([bin(val)[2:].zfill(digit) for val in inputList]) 
-    # print(inputList)
-    # print("len", len(inputList))
     binary = ''
     for i, val in enumerate(inputList):
         if i != len(inputList)-2 :
@@ -44,7 +39,6 @@ def convertIntArraytoByte(inputList: List[int], digit: int) -> bytes:
             break
 
     intResult = int(binary, 2)
-    
     result = intResult.to_bytes((len(binary) + 7) // 8, "big", signed=False)
 
     return result
@@ -62,13 +56,6 @@ def decryptFile(fileName: str, d: int, n: int):
     file = open(fileName, "rb")
     cipherBytes = file.read()
     file.close()
-
-    
-    # intValue = int.from_bytes(plainBytes, "big", signed=False)
-    # print("value:",intValue)
-    # cipherInt = baseEncrypt(intValue, e, n)
-    # print("cipher:",cipherInt)
-    # cipherBytes = intValue.to_bytes((cipherInt.bit_length() + 7) // 8, "big", signed=False)
     
     digitDiv = digitDivider(n)
     intValue = convertBytetoIntArray(cipherBytes, maxBitLength(n))
@@ -85,7 +72,7 @@ def decryptFile(fileName: str, d: int, n: int):
 # encryptFile("main.py",7,209)
 # decryptFile("files/encrypted_main.py",283,209)
 # decryptFile("files/encrypted_legenda.png",283,209)
-# decryptFile("files/encrypted_legenda2.png",1019,3337)
+decryptFile("files/encrypted_legenda2.png",62093,39203)
 # decryptFile("files/encrypted_util2.mkv",1019,3337)
 # convertBytetoIntArray(b'\xfc\x00', 5)
 # convertIntArraytoByte([2,2])
