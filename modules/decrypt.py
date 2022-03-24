@@ -7,19 +7,24 @@ Decryption
 from typing import List
 import math
 
-
 def baseDecrypt(c: int, d: int, n: int) -> int:
     '''
-    Base RSA Encryption algorithm
+    Fungsi basis dekripsi RSA menggunakan kunci privat (d,n)
     '''
     return pow(c, d, n)
 
 def binaryPadding(bits: str, n: int) -> str :
+    '''
+    Menambahkah padding '0' sebanyak n bit.
+    '''
     while len(bits) % n != 0:
         bits = '0'+bits
     return bits
     
 def convertBytetoIntArray(bytesInput: bytes, digitDiv: int) -> List[int]:
+    '''
+    Konversi Byte ke Array of Integer
+    '''
     result = []
     binInput = bin(int.from_bytes(bytesInput, "big"))[2:]
     binInput = binaryPadding(binInput, digitDiv)
@@ -30,6 +35,9 @@ def convertBytetoIntArray(bytesInput: bytes, digitDiv: int) -> List[int]:
     return result
 
 def convertIntArraytoByte(inputList: List[int], digit: int) -> bytes:
+    '''
+    Konversi Array of Integer menjadi Byte
+    '''
     binary = ''
     for i, val in enumerate(inputList):
         if i != len(inputList)-2 :
@@ -44,14 +52,20 @@ def convertIntArraytoByte(inputList: List[int], digit: int) -> bytes:
     return result
 
 def digitDivider(n: int) -> int:
+    '''
+    Menentukan panjang digit/bit awal
+    '''
     return math.floor(math.log2(n))
 
 def maxBitLength(n: int) -> int:
+    '''
+    Menentukan panjang bit maksimal membagi enkripsi binary [0...n-1]
+    '''
     return (n-1).bit_length()
 
 def decryptFile(fileName: str, d: int, n: int):
     '''
-    File decryption
+    Operasi dekripsi file berdasarkan kunci publik (d,n)
     '''
     file = open(fileName, "rb")
     cipherBytes = file.read()
@@ -66,13 +80,3 @@ def decryptFile(fileName: str, d: int, n: int):
     file = open(f"files/decrypted_{ext}", "wb")
     file.write(plainBytes)
     file.close()
-
-# Public Key (E, N): (7,209)
-# Private Key (D, N): (283,209)
-# encryptFile("main.py",7,209)
-# decryptFile("files/encrypted_main.py",283,209)
-# decryptFile("files/encrypted_legenda.png",283,209)
-# decryptFile("files/encrypted_legenda2.png",62093,39203)
-# decryptFile("files/encrypted_util2.mkv",1019,3337)
-# convertBytetoIntArray(b'\xfc\x00', 5)
-# convertIntArraytoByte([2,2])
